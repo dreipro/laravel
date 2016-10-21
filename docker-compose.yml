@@ -1,12 +1,11 @@
 version: '2'
 
 services:
-  laravel-web:
+  laravel:
     build: .
-    image: herrphon/laravel
-    container_name: laravel
+    image: dreipro/laravel-docker
+    container_name: laravel-docker
     ports:
-      - "3000:3000"
       - "8000:8000"
     volumes:
       - ./app:/app

@@ -1,9 +1,17 @@
-FROM ubuntu:16.04
-MAINTAINER Alex
+FROM php:7.0
+MAINTAINER Alex + Martin
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# do the basic OS upgrades - PHP official image is based on Debian
+# ----------------------------------------------------------------
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y \
+	apt-utils
+	
 # install gosu
+# ------------
 ENV GOSU_VERSION 1.9
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
@@ -17,36 +25,22 @@ RUN set -x \
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true 
 
-
-# upgrade the container and install some prerequisites
-RUN apt-get update  \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends \
-      software-properties-common \
-      curl \
-      build-essential \
-      dos2unix \
-      gcc \
-      git \
-      libmcrypt4 \
-      libpcre3-dev \
-      memcached \
-      make \
-      python2.7-dev \
-      python-pip \
-      re2c \
-      unattended-upgrades \
-      whois \
-      vim \
-      libnotify-bin \
-      nano \
-      wget \
-      debconf-utils \
-      apt-utils \
-      language-pack-en-base
-
-
+# install libraries and prerequisites for PHP module builds
+# ---------------------------------------------------------  
+RUN apt-get install -y --no-install-recommends \
+    git \
+    libbz2-dev \
+    libicu-dev \
+    libmcrypt-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    libvpx-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libxpm-dev
+	
 # set the locale
+# --------------
 RUN export LC_ALL=en_US.UTF-8 && \
     export LANG=en_US.UTF-8
 
