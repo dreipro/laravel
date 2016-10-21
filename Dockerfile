@@ -47,40 +47,49 @@ RUN export LC_ALL=en_US.UTF-8 && \
 # set the timezone
 RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
-
+# use the helper scripts from the official PHP container
+# to build some more modules
+# ------------------------------------------------------
+RUN docker-php-ext-install \
+	bz2 \
+	gd \
+	mcrypt \
+	zip \
+	intl \
+	pdo_mysql \
+	opcache
 
 # install php
-RUN apt-get install -y --force-yes \
-      php7.0-cli \
-      php7.0-dev \
-      php-pgsql \
-      php-sqlite3  \
-      php-gd  \
-      php-apcu \
-      php-curl \
-      php7.0-mcrypt \
-      php-imap \
-      php-mysql \
-      php-memcached \
-      php7.0-readline \
-      php-xdebug php-mbstring \
-      php-xml \
-      php7.0-zip \
-      php7.0-intl \
-      php7.0-bcmath \
-      php-soap 
+# RUN apt-get install -y --force-yes \
+#      php7.0-cli \
+#      php7.0-dev \
+#      php-pgsql \
+#      php-sqlite3  \
+#      php-gd  \
+#      php-apcu \
+#      php-curl \
+#      php7.0-mcrypt \
+#      php-imap \
+#      php-mysql \
+#      php-memcached \
+#      php7.0-readline \
+#      php-xdebug php-mbstring \
+#      php-xml \
+#      php7.0-zip \
+#      php7.0-intl \
+#      php7.0-bcmath \
+#      php-soap 
 
 RUN sed -i -e "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini && \
     sed -i -e "s/display_errors = .*/display_errors = On/" /etc/php/7.0/cli/php.ini && \
     sed -i -e "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/cli/php.ini
+
 RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
-RUN phpdismod -s cli xdebug
-RUN phpenmod mcrypt && \
-    mkdir -p /run/php/ && chown -Rf www-data.www-data /run/php
 
-
+RUN mkdir -p /run/php/ && chown -Rf www-data.www-data /run/php
 
 # install composer
+# ----------------
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
     printf "\nPATH=\"~/.composer/vendor/bin:\$PATH\"\n" | tee -a ~/.bashrc 
