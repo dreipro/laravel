@@ -14,7 +14,9 @@ RUN apt-get update && \
 # ------------
 ENV GOSU_VERSION 1.9
 RUN set -x \
-  && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+  && apt-get update && apt-get install -y --no-install-recommends \
+     ca-certificates \
+     wget \
   && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
   && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
@@ -37,6 +39,7 @@ RUN apt-get install -y --no-install-recommends \
     libvpx-dev \
     libjpeg-dev \
     libpng-dev \
+	libxml2-dev \
     libxpm-dev
 	
 # set the locale
@@ -57,34 +60,25 @@ RUN docker-php-ext-install \
 	zip \
 	intl \
 	pdo_mysql \
-	opcache
+	opcache \
+	soap
 
 # install php
 # RUN apt-get install -y --force-yes \
 #      php7.0-cli \
 #      php7.0-dev \
 #      php-pgsql \
-#      php-sqlite3  \
-#      php-gd  \
 #      php-apcu \
-#      php-curl \
-#      php7.0-mcrypt \
 #      php-imap \
-#      php-mysql \
 #      php-memcached \
-#      php7.0-readline \
-#      php-xdebug php-mbstring \
-#      php-xml \
-#      php7.0-zip \
-#      php7.0-intl \
+#      php-xdebug \
 #      php7.0-bcmath \
-#      php-soap 
 
-RUN sed -i -e "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini && \
-    sed -i -e "s/display_errors = .*/display_errors = On/" /etc/php/7.0/cli/php.ini && \
-    sed -i -e "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/cli/php.ini
+# RUN sed -i -e "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini && \
+#     sed -i -e "s/display_errors = .*/display_errors = On/" /etc/php/7.0/cli/php.ini && \
+#     sed -i -e "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/cli/php.ini
 
-RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
+# RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
 RUN mkdir -p /run/php/ && chown -Rf www-data.www-data /run/php
 
@@ -113,6 +107,8 @@ COPY container-content/init.sh  /
 COPY container-content/entry.sh /
 COPY container-content/add-user-and-su.sh /
 COPY container-content/ostype.sh /
+
+RUN chmod +x /*.sh
 
 WORKDIR "/app"
 CMD ["/entry.sh"]
