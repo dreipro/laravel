@@ -107,9 +107,9 @@ COPY container-content/init.sh  /
 COPY container-content/entry.sh /
 COPY container-content/add-user-and-su.sh /
 COPY container-content/ostype.sh /
+COPY container-content/php.ini /usr/local/etc/php/
 
 RUN chmod +x /*.sh
 
 WORKDIR "/app"
 CMD ["/entry.sh"]
-
