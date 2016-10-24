@@ -5,11 +5,10 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # do the basic OS upgrades - PHP official image is based on Debian
 # ----------------------------------------------------------------
-RUN apt-get update && \
-	apt-get upgrade -y && \
-	apt-get install -y \
-	apt-utils
-	
+RUN apt-get update \
+ && apt-get -y upgrade \
+ && apt-get -y install apt-utils
+
 # install gosu
 # ------------
 ENV GOSU_VERSION 1.9
@@ -39,13 +38,13 @@ RUN apt-get install -y --no-install-recommends \
     libvpx-dev \
     libjpeg-dev \
     libpng-dev \
-	libxml2-dev \
+    libxml2-dev \
     libxpm-dev
-	
+
 # set the locale
 # --------------
-RUN export LC_ALL=en_US.UTF-8 && \
-    export LANG=en_US.UTF-8
+RUN export LC_ALL=en_US.UTF-8 \
+ && export LANG=en_US.UTF-8
 
 # set the timezone
 RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
@@ -54,14 +53,14 @@ RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 # to build some more modules
 # ------------------------------------------------------
 RUN docker-php-ext-install \
-	bz2 \
-	gd \
-	mcrypt \
-	zip \
-	intl \
-	pdo_mysql \
-	opcache \
-	soap
+  bz2 \
+  gd \
+  mcrypt \
+  zip \
+  intl \
+  pdo_mysql \
+  opcache \
+  soap
 
 # install php
 # RUN apt-get install -y --force-yes \
@@ -74,19 +73,16 @@ RUN docker-php-ext-install \
 #      php-xdebug \
 #      php7.0-bcmath \
 
-# RUN sed -i -e "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini && \
-#     sed -i -e "s/display_errors = .*/display_errors = On/" /etc/php/7.0/cli/php.ini && \
-#     sed -i -e "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/cli/php.ini
 
-# RUN find /etc/php/7.0/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
-RUN mkdir -p /run/php/ && chown -Rf www-data.www-data /run/php
+RUN mkdir -p /run/php/ \
+ && chown -Rf www-data.www-data /run/php
 
 # install composer
 # ----------------
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer && \
-    printf "\nPATH=\"~/.composer/vendor/bin:\$PATH\"\n" | tee -a ~/.bashrc 
+RUN curl -sS https://getcomposer.org/installer | php \
+ && mv composer.phar /usr/local/bin/composer \
+ && printf "\nPATH=\"~/.composer/vendor/bin:\$PATH\"\n" | tee -a ~/.bashrc 
 
 # install laravel envoy
 RUN composer global require "laravel/envoy"
@@ -99,14 +95,15 @@ RUN composer global require "laravel/lumen-installer"
 
 # install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs && \
-    /usr/bin/npm install -g gulp && \
-    /usr/bin/npm install -g bower
+RUN apt-get install -y nodejs \
+ && /usr/bin/npm install -g gulp \
+ && /usr/bin/npm install -g bower
 
 COPY container-content/init.sh  /
 COPY container-content/entry.sh /
 COPY container-content/add-user-and-su.sh /
 COPY container-content/ostype.sh /
+
 COPY container-content/php.ini /usr/local/etc/php/
 
 RUN chmod +x /*.sh
