@@ -99,12 +99,12 @@ RUN apt-get install -y nodejs \
  && /usr/bin/npm install -g gulp \
  && /usr/bin/npm install -g bower
 
-COPY container-content/init.sh  /
-COPY container-content/entry.sh /
-COPY container-content/add-user-and-su.sh /
-COPY container-content/ostype.sh /
+COPY container_content/init.sh  /
+COPY container_content/entry.sh /
+COPY container_content/add-user-and-su.sh /
+COPY container_content/ostype.sh /
 
-COPY container-content/php.ini /usr/local/etc/php/
+COPY container_content/php.ini /usr/local/etc/php/
 
 RUN chmod +x /*.sh
 
