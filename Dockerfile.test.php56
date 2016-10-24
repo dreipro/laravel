@@ -1,0 +1,9 @@
+FROM dreipro/php56-docker
+
+MAINTAINER Martin + Alex
+
+RUN mkdir -p /opt/phpunit && \
+    curl -L -sS https://phar.phpunit.de/phpunit.phar -o /opt/phpunit/phpunit.phar
+
+ADD src/run_tests.sh /
+

@@ -1,0 +1,7 @@
+version: "2"
+
+services:
+  php70:
+    build: .
+    image: dreipro/php70-docker:latest
+

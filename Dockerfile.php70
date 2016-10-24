@@ -1,0 +1,35 @@
+FROM php:7.0
+MAINTAINER Martin + Alex
+
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y \
+	apt-utils
+
+RUN apt-get install -y --no-install-recommends \
+	git \
+	libbz2-dev \
+	libicu-dev \
+	libmcrypt-dev \
+	zlib1g-dev
+
+RUN apt-get install -y --no-install-recommends \
+	libfreetype6-dev \
+	libvpx-dev \
+	libjpeg-dev \
+	libpng-dev \
+	libxpm-dev
+
+RUN docker-php-ext-install \
+	bz2 \
+	gd \
+	mcrypt \
+	zip \
+	intl \
+	pdo_mysql \
+	opcache
+
+RUN mkdir -p /opt/composer && \
+	cd /opt/composer && \
+	curl -sS https://getcomposer.org/installer | php
+
