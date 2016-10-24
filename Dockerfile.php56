@@ -14,6 +14,8 @@ RUN apt-get update \
 ENV GOSU_VERSION 1.9
 RUN set -x \
   && apt-get update && apt-get install -y --no-install-recommends \
+     apt-transport-https \
+	 lsb-release
      ca-certificates \
      wget \
   && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
