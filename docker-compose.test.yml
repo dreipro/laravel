@@ -4,6 +4,6 @@ services:
   sut:
     build:
       context: .
-      dockerfile: Dockerfile.test.php70
+      dockerfile: Dockerfile.test
     command: /run_tests.sh
 
