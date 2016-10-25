@@ -3,14 +3,14 @@ version: '2'
 services:
   laravel-php70:
     build:
-      context: ..
-      dockerfile: php70/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     image: dreipro/laravel-docker:php70
     container_name: laravel-docker-php70
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ../app:/app
     environment:
       USER: "${USER}"
       OSX: ${_system_name} 
