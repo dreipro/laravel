@@ -99,10 +99,10 @@ RUN apt-get install -y nodejs \
  && /usr/bin/npm install -g gulp \
  && /usr/bin/npm install -g bower
 
-COPY ./container_content/init.sh  /init.sh
-COPY ./container_content/entry.sh /entry.sh
-COPY ./container_content/add-user-and-su.sh /add-user-and-su.sh
-COPY ./container_content/ostype.sh /ostype.sh
+COPY container_content/init.sh  /init.sh
+COPY container_content/entry.sh /entry.sh
+COPY container_content/add-user-and-su.sh /add-user-and-su.sh
+COPY container_content/ostype.sh /ostype.sh
 
 COPY container_content/php.ini /usr/local/etc/php/php.ini
 

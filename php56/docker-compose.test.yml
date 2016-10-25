@@ -3,7 +3,7 @@ version: "2"
 services:
   sut:
     build:
-      context: .
-      dockerfile: Dockerfile.test
+      context: ..
+      dockerfile: php56/Dockerfile.test
     command: /run_tests.sh
 

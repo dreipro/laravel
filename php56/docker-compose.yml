@@ -3,8 +3,8 @@ version: '2'
 services:
   laravel-php56:
     build:
-      context: .
-      dockerfile: Dockerfile.php56
+      context: ..
+      dockerfile: php56/Dockerfile
     image: dreipro/laravel-docker:php56
     container_name: laravel-docker-php56
     ports:

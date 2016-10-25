@@ -1,12 +1,12 @@
 version: '2'
 
 services:
-  laravel:
+  laravel-php70:
     build:
       context: .
-      dockerfile: Dockerfile.php70
-    image: dreipro/laravel-docker:latest
-    container_name: laravel-docker
+      dockerfile: php70/Dockerfile
+    image: dreipro/laravel-docker:php70
+    container_name: laravel-docker-php70
     ports:
       - "8000:8000"
     volumes:

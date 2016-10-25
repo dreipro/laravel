@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  sut:
+    build:
+      context: ..
+      dockerfile: php70/Dockerfile.test
+    command: /run_tests.sh
+
