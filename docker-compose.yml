@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  laravel-php70:
+  laravel:
     build:
       context: php70
       dockerfile: Dockerfile
