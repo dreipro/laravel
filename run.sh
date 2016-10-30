@@ -1,4 +1,9 @@
 #!/bin/bash -xe
 
-docker-compose run laravel $@
+
+if [ "$1" == "" ]; then
+  docker-compose run laravel bash
+else
+  docker-compose run laravel $@
+fi
 
