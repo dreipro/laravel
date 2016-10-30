@@ -2,8 +2,8 @@
 
 ## Locations
 
-* [github repo](https://github.com/dreipro/laravel-docker)
-* [dockerhub repo](https://hub.docker.com/r/herrphon/laravel/)
+* [github repo](https://github.com/dreipro/laravel)
+* [dockerhub repo](https://hub.docker.com/r/dreipro/laravel/)
 
 
 ## Appendix
