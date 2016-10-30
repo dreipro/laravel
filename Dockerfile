@@ -45,8 +45,8 @@ RUN apt-get install -y --no-install-recommends \
 
 # set the locale
 # --------------
-RUN locale-gen de_DE.UTF-8 \
- && locale-gen en_US.UTF-8 \
+RUN apt-get install -y locales \
+ && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
  && dpkg-reconfigure locales
 
 ENV LC_ALL en_US.UTF-8
