@@ -1,9 +1,0 @@
-FROM dreipro/laravel-docker:php70
-
-MAINTAINER Martin + Alex
-
-RUN mkdir -p /opt/phpunit \
- && curl -L -sS https://phar.phpunit.de/phpunit.phar -o /opt/phpunit/phpunit.phar
-
-ADD container_content/run_tests.sh /
-

@@ -99,14 +99,22 @@ RUN apt-get install -y nodejs \
  && /usr/bin/npm install -g gulp \
  && /usr/bin/npm install -g bower
 
-COPY container_content/init.sh  /init.sh
-COPY container_content/entry.sh /entry.sh
-COPY container_content/add-user-and-su.sh /add-user-and-su.sh
-COPY container_content/ostype.sh /ostype.sh
+COPY container_content/init.sh             /init.sh
+COPY container_content/entry.sh            /entry.sh
+COPY container_content/add-user-and-su.sh  /add-user-and-su.sh
+COPY container_content/ostype.sh           /ostype.sh
+COPY container_content/run_tests.sh        /
 
-COPY container_content/php.ini /usr/local/etc/php/php.ini
+RUN mkdir -p /opt/phpunit \
+ && curl -L -sS https://phar.phpunit.de/phpunit.phar -o /opt/phpunit/phpunit.phar
+
+
+COPY container_content/php.ini  /usr/local/etc/php/php.ini
 
 RUN chmod +x /*.sh
 
+EXPOSE 8000
+
 WORKDIR "/app"
 CMD ["/entry.sh"]
+
