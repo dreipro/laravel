@@ -45,8 +45,8 @@ RUN apt-get install -y --no-install-recommends \
 
 # set the locale
 # --------------
-RUN export LC_ALL=en_US.UTF-8 \
- && export LANG=en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV LANG   en_US.UTF-8
 
 # set the timezone
 RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
