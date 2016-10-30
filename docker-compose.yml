@@ -3,7 +3,7 @@ version: '2'
 services:
     laravel:
         build: .
-        image: dreipro/laravel:php-7.0
+        image: dreipro/laravel:php-5.6
         container_name: laravel
         hostname: laravel
         domainname: dev

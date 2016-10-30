@@ -1,4 +1,4 @@
-FROM php:7.0
+FROM php:5.6
 MAINTAINER Alexander von Renteln <alexander.renteln@gmail.com>, Martin Bayreuther
 
 ENV DEBIAN_FRONTEND noninteractive
