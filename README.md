@@ -32,3 +32,4 @@ $ composer update
 
 * Other docker laravel stuff
   * [mtmacdonald/docker-laravel](https://github.com/mtmacdonald/docker-laravel)
+  * [LaraDock/laradock](https://github.com/LaraDock/laradock)
