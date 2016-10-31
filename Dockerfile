@@ -114,7 +114,10 @@ RUN chmod +x /*.sh
 
 # Add php-unit
 RUN mkdir -p /opt/phpunit \
- && curl -L -sS https://phar.phpunit.de/phpunit.phar -o /opt/phpunit/phpunit.phar
+ && curl -L -sS https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit \
+ && chmod +x /usr/local/bin/phpunit
+# alternative: 
+# RUN composer global require "phpunit/phpunit=5.5.*"
 
 
 COPY container_content/php.ini  /usr/local/etc/php/php.ini

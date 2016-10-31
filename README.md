@@ -9,8 +9,16 @@
 ## Appendix
 
 ``` bash
-composer install
-composer update
+# install the defined dependencies for the project
+$ composer install
+
+# if composer.lock exists fetch the latest matching versions
+$ composer update
 ```
 
+
+## Links
+
+* [Composer](https://getcomposer.org/doc/00-intro.md) - 
+* [PhpUnit](https://phpunit.de/)
 
