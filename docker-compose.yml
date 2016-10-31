@@ -12,5 +12,4 @@ services:
     environment:
       USER: "${USER}"
       OSX: ${_system_name} 
-      HOST_OS_TYPE: ${OSTYPE} 
 
