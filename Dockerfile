@@ -28,6 +28,11 @@ RUN set -x \
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true 
 
+
+RUN wget -O /usr/local/bin/forego "https://github.com/jwilder/forego/releases/download/v0.16.1/forego" \
+ && chmod +x /usr/local/bin/forego
+
+
 # install libraries and prerequisites for PHP module builds
 # ---------------------------------------------------------  
 RUN apt-get install -y --no-install-recommends \
@@ -103,13 +108,16 @@ RUN apt-get install -y nodejs \
  && /usr/bin/npm install -g gulp \
  && /usr/bin/npm install -g bower
 
-COPY container_content/become.sh      /become.sh
 COPY container_content/entry.sh       /entry.sh
 COPY container_content/init.sh        /init.sh
 COPY container_content/run_tests.sh   /run_tests.sh
-COPY container_content/ostype.sh      /ostype.sh
 
-RUN chmod +x /*.sh
+COPY container_content/become.sh      /root/become.sh
+COPY container_content/ostype.sh      /root/ostype.sh
+COPY container_content/Procfile       /root/Procfile
+
+RUN chmod +x /*.sh \
+ && chmod +x /root/*.sh
 
 
 # Add php-unit
