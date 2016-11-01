@@ -28,3 +28,9 @@ $ composer update
   * [Speciphy](https://github.com/speciphy/speciphy)
 
   * [Behat - Cucumber in PHP](http://behat.org/en/latest/)
+
+
+* Other docker laravel stuff
+  * [mtmacdonald/docker-laravel](https://github.com/mtmacdonald/docker-laravel)
+  * [LaraDock/laradock](https://github.com/LaraDock/laradock)
+  * [Dylan Lindgren - Docker for the Laravel Framework](http://dylanlindgren.com/docker-for-the-laravel-framework/)
