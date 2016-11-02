@@ -1,2 +1,3 @@
 php:   cd /app && php artisan serve --host=0.0.0.0
 gulp:  cd /app && gulp watch
+logs:  cd /app && touch storage/logs/laravel.log && tail -f storage/logs/laravel.log 
