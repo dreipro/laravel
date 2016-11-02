@@ -108,18 +108,6 @@ RUN apt-get install -y nodejs \
  && /usr/bin/npm install -g gulp \
  && /usr/bin/npm install -g bower
 
-COPY container_content/entry.sh       /entry.sh
-COPY container_content/init.sh        /init.sh
-COPY container_content/run_tests.sh   /run_tests.sh
-
-COPY container_content/become.sh      /root/become.sh
-COPY container_content/ostype.sh      /root/ostype.sh
-COPY container_content/Procfile       /root/Procfile
-
-RUN chmod +x /*.sh \
- && chmod +x /root/*.sh
-
-
 # Add php-unit
 RUN mkdir -p /opt/phpunit \
  && curl -L -sS https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit \
@@ -127,8 +115,19 @@ RUN mkdir -p /opt/phpunit \
 # alternative: 
 # RUN composer global require "phpunit/phpunit=5.5.*"
 
-
 COPY container_content/php.ini  /usr/local/etc/php/php.ini
+
+COPY container_content/entry.sh       /entry.sh
+COPY container_content/init.sh        /init.sh
+COPY container_content/Procfile       /Procfile
+COPY container_content/run_tests.sh   /run_tests.sh
+
+COPY container_content/become.sh      /root/become.sh
+COPY container_content/ostype.sh      /root/ostype.sh
+
+RUN chmod +x /*.sh \
+ && chmod +x /root/*.sh
+
 
 EXPOSE 8000
 WORKDIR "/app"

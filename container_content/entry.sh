@@ -1,7 +1,6 @@
 #!/bin/bash
 
-/init.sh
+/root/become.sh /init.sh
 
-# cd /app && php artisan serve --host=0.0.0.0
+cd / && /root/become.sh forego start -r
 
-cd /root && forego start -r
