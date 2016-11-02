@@ -29,15 +29,24 @@ fi
 
 
 if [ $USER_ID -eq 0 ]; then
-  exec bash
-fi
 
+  if [ "$1" == "" ]; then
+    exec bash
+  else
+    exec $@
+  fi
 
-if [ "$1" == "" ]; then
-  gosu ${USER_NAME} bash
 else
-  gosu ${USER_NAME} $@
+
+  if [ "$1" == "" ]; then
+    gosu ${USER_NAME} bash
+  else
+    gosu ${USER_NAME} $@
+  fi
+
 fi
+
+
 
 
 
