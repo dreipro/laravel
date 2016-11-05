@@ -1,23 +1,121 @@
 FROM php:7.0
-MAINTAINER Alex + Martin
+MAINTAINER Alexander von Renteln <alexander.renteln@gmail.com>, Martin Bayreuther
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# do the basic OS upgrades - PHP official image is based on Debian
+# Set locale and timezone
+# ------------------------
+RUN apt-get update \
+ && apt-get install -y locales \
+ && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+ && dpkg-reconfigure locales \
+ && ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
+ && rm -rf /var/lib/apt/lists/*
+ENV LC_ALL en_US.UTF-8
+ENV LANG   en_US.UTF-8
+
+
+# Do basic OS upgrades - PHP official image is based on Debian
 # ----------------------------------------------------------------
 RUN apt-get update \
  && apt-get -y upgrade \
- && apt-get -y install apt-utils
+ && apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        apt-utils \
+        bzr \
+        curl \
+        ca-certificates \
+        git \
+        lsb-release \
+        mercurial \
+        openssh-client \
+        procps \
+        subversion \
+        wget \
+  && rm -rf /var/lib/apt/lists/*
 
-# install gosu
+
+# For node.js
+# FROM buildpack-deps:jessie
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+        autoconf \
+        automake \
+        bzip2 \
+        file \
+        g++ \
+        gcc \
+        imagemagick \
+        libbz2-dev \
+        libc6-dev \
+        libcurl4-openssl-dev \
+        libdb-dev \
+        libevent-dev \
+        libffi-dev \
+        libgdbm-dev \
+        libgeoip-dev \
+        libglib2.0-dev \
+        libjpeg-dev \
+        libkrb5-dev \
+        liblzma-dev \
+        libmagickcore-dev \
+        libmagickwand-dev \
+        libmysqlclient-dev \
+        libncurses-dev \
+        libpng-dev \
+        libpq-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libssl-dev \
+        libtool \
+        libwebp-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libyaml-dev \
+        make \
+        patch \
+        xz-utils \
+        zlib1g-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r node && useradd -r -g node node
+
+# gpg keys listed at https://github.com/nodejs/node
+RUN set -ex \
+  && for key in \
+    9554F04D7259F04124DE6B476D5A82AC7E37093B \
+    94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
+    0034A06D9D9B0064CE8ADF6BF1747F4AD2306D93 \
+    FD3A5288F042B6850C66B31F09FE44734EB7990E \
+    71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
+    DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
+    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
+    C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
+  ; do \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+  done
+
+ENV NPM_CONFIG_LOGLEVEL info
+ENV NODE_VERSION 7.0.0
+
+RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
+  && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+  && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
+  && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
+  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
+  && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
+  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+
+RUN npm install -g gulp \
+ && npm install -g bower
+
+
+
+
+# Install gosu
 # ------------
 ENV GOSU_VERSION 1.9
 RUN set -x \
-  && apt-get update && apt-get install -y --no-install-recommends \
-     apt-transport-https \
-     lsb-release \
-     ca-certificates \
-     wget \
   && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
   && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
   && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
@@ -29,38 +127,32 @@ RUN set -x \
   && gosu nobody true 
 
 
+# Install forego
+# --------------
 RUN wget -O /usr/local/bin/forego "https://github.com/jwilder/forego/releases/download/v0.16.1/forego" \
  && chmod +x /usr/local/bin/forego
 
 
-# install libraries and prerequisites for PHP module builds
+
+# Install libraries and prerequisites for PHP module builds
 # ---------------------------------------------------------  
-RUN apt-get install -y --no-install-recommends \
-    git \
-    libbz2-dev \
-    libicu-dev \
-    libmcrypt-dev \
-    zlib1g-dev \
-    libfreetype6-dev \
-    libvpx-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libxml2-dev \
-    libxpm-dev
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+        git \
+        libbz2-dev \
+        libicu-dev \
+        libmcrypt-dev \
+        zlib1g-dev \
+        libfreetype6-dev \
+        libvpx-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libxml2-dev \
+        libxpm-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-# set the locale
-# --------------
-RUN apt-get install -y locales \
- && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
- && dpkg-reconfigure locales
 
-ENV LC_ALL en_US.UTF-8
-ENV LANG   en_US.UTF-8
-
-# set the timezone
-RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
-
-# use the helper scripts from the official PHP container
+# Use the helper scripts from the official PHP container
 # to build some more modules
 # ------------------------------------------------------
 RUN docker-php-ext-install \
@@ -102,11 +194,6 @@ RUN composer global require "laravel/installer"
 # install lumen installer
 RUN composer global require "laravel/lumen-installer"
 
-# install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs \
- && /usr/bin/npm install -g gulp \
- && /usr/bin/npm install -g bower
 
 # Add php-unit
 RUN mkdir -p /opt/phpunit \
