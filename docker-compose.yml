@@ -3,7 +3,7 @@ version: '2'
 services:
   laravel:
     build: .
-    image: dreipro/laravel-docker:php-7.0
+    image: dreipro/laravel:php-7.0
     container_name: laravel
     ports:
       - "8000:8000"
