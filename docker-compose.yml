@@ -6,7 +6,9 @@ services:
     image: dreipro/laravel:php-7.0
     container_name: laravel
     ports:
-      - "8000:8000"
+      - "3000:3000"  # browser-sync
+      - "3001:3001"  # browser-sync-ui
+      - "8000:8000"  # laravel web
     volumes:
       - ./app:/app
     environment:
