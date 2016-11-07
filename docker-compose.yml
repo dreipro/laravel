@@ -15,5 +15,8 @@ services:
       - ./app:/app
     environment:
       USER: "${USER}"
-      OSX: ${_system_name} 
+      OSX: "${_system_name}"
+      APP_ENV: "testing"
+      APP_LOG: "errorlog"
+      APP_KEY: "${APP_KEY}"
 
