@@ -4,7 +4,13 @@ export COMMAND="${@:-bash}"
 export WORKDIR="/app"
 
 export USER_ID=$(stat --format=%u ${WORKDIR})
-export USER_NAME="${USER:-app}"
+
+if [[ $USER_ID -eq 0 ]]; then
+  export USER_NAME="root"
+else
+  export USER_NAME="${USER:-app}"
+fi
+
 export USER_HOME="/home/${USER_NAME}"
 
 export GROUP_ID=$(stat --format=%g ${WORKDIR})
