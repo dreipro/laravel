@@ -18,7 +18,7 @@ export GROUP_NAME="${USER_NAME}"
 
 
 
-echo "Executing command '${COMMAND}' as '${USER_NAME}' (${USER_ID}/${GROUP_ID})"
+echo "Executing command '${COMMAND}' as '${USER_NAME}' (uid:${USER_ID}/gid:${GROUP_ID})"
 
 if ! id "${USER_ID}" >/dev/null 2>&1; then
     echo "User id '${USER_ID}' does not exist - creating it..."
