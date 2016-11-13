@@ -16,7 +16,14 @@ services:
     environment:
       USER: "${USER}"
       OSX: "${_system_name}"
+
       APP_ENV: "testing"
       APP_LOG: "errorlog"
       APP_KEY: "${APP_KEY}"
+
+      DB_HOST: "mysql"
+      DB_DATABASE: "project_name"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "secret"
+
 
