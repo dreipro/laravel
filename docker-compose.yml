@@ -1,29 +1,45 @@
 version: '2'
 
 services:
-  laravel:
-    build: .
-    image: dreipro/laravel:php-7.0
-    container_name: laravel
-    hostname: laravel
-    domainname: dev
-    ports:
-      - "3000:3000"  # browser-sync
-      - "3001:3001"  # browser-sync-ui
-      - "8000:8000"  # laravel web
-    volumes:
-      - ./app:/app
-    environment:
-      USER: "${USER}"
-      OSX: "${_system_name}"
+    laravel:
+        build: .
+        image: dreipro/laravel:php-7.0
+        container_name: laravel
+        hostname: laravel
+        domainname: dev
 
-      APP_ENV: "testing"
-      APP_LOG: "errorlog"
-      APP_KEY: "${APP_KEY}"
+        ports:
+            - "3000:3000"  # browser-sync
+            - "3001:3001"  # browser-sync-ui
+            - "8000:8000"  # laravel web
 
-      DB_HOST: "mysql"
-      DB_DATABASE: "project_name"
-      DB_USERNAME: "root"
-      DB_PASSWORD: "secret"
+        volumes:
+            - ./app:/app
+
+        environment:
+            USER: "${USER}"
+            OSX: "${_system_name}"
+
+            APP_ENV: "testing"
+            APP_LOG: "errorlog"
+            APP_KEY: "${APP_KEY}"
+
+            DB_HOST: "mysql"
+            DB_DATABASE: "project_name"
+            DB_USERNAME: "user"
+            DB_PASSWORD: "secret"
 
 
+    mysql:
+        image: mysql:5.7
+        container_name: mysql
+
+        volumes:
+            - "./db:/var/lib/mysql"
+
+        environment:
+            MYSQL_ROOT_PASSWORD: "secret" 
+            MYSQL_DATABASE: "project_name"
+            MYSQL_USER: "user"
+            MYSQL_PASSWORD: "secret"
+        

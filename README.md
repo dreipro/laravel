@@ -46,6 +46,7 @@ $ composer update
 
   * [Behat - Cucumber in PHP](http://behat.org/en/latest/)
 
+* [phpstorm license](http://us.idea.lanyus.com/)
 
 * Other docker laravel stuff
   * [mtmacdonald/docker-laravel](https://github.com/mtmacdonald/docker-laravel)
