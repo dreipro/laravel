@@ -107,8 +107,8 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
 RUN npm install -g gulp \
- && npm install -g bower
-
+ && npm install -g bower \
+ && npm install -g npm-check-updates
 
 
 
