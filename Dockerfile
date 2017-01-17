@@ -114,6 +114,8 @@ RUN npm install -g gulp \
  && npm install -g bower \
  && npm install -g npm-check-updates
 
+# instead of apt-get install yarn can also be installed via npm:
+# && npm install -g yarn \
 
 
 # Install gosu
