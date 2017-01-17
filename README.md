@@ -25,6 +25,12 @@ Work on master branch. Then rebase php-5.6 branch on master:
 * <https://code.facebook.com/posts/1840075619545360>
 
 
+``` sh
+npm install → yarn
+
+npm install --save <name> → yarn add <name>
+```
+
 
 ## Appendix
 
