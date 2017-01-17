@@ -34,6 +34,9 @@ RUN apt-get update \
         wget \
   && rm -rf /var/lib/apt/lists/*
 
+# Add repo for yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+ && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 
 # For node.js
 # FROM buildpack-deps:jessie
@@ -75,6 +78,7 @@ RUN apt-get update \
         make \
         patch \
         xz-utils \
+        yarn \
         zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
